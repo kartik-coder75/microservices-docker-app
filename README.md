@@ -153,35 +153,36 @@ Client calls order-service at http://localhost:5001/order → order-service call
 
 ### Selected Domain
 
-`<FILL: domain name and a brief justification>`
+##### Order Management: 
+Justification: E-commerce applications require decoupled components where ordering, user authentication/profile management, and asynchronous customer notifications operate independently to ensure fault isolation and scalable workload handling.
 
 ### Microservices and Their Responsibilities
 
 | Service | Name | Responsibility | Port |
 |---------|------|----------------|------|
-| Service 1 | `<FILL>` | `<FILL>` | `<FILL>` |
-| Service 2 | `<FILL>` | `<FILL>` | `<FILL>` |
-| Service 3 | `<FILL>` | `<FILL>` | `<FILL>` |
+| Service 1 | order-service | Acts as the primary API gateway; aggregates customer data and triggers notifications upon order processing. | 5001 (Host) / 5000 (Container) |
+| Service 2 | user-service | Manages user accounts, retrieves active profile data, and validates user status. | 5002 (Host) / 5000 (Container) |
+| Service 3 | notification-service | Handles dispatching email/SMS notifications and confirmation alerts. | 5003 (Host) / 5000 (Container) |
 
 ### REST API Endpoints
 
-**Service 1 — `<FILL NAME>`**
+**Service 1 — order-service**
 
 | Method | Endpoint | Description | Sample Response |
 |--------|----------|-------------|-----------------|
-| `GET` | `<FILL>` | `<FILL>` | `<FILL>` |
+| GET | /order | Orchestrates the order flow by querying User and Notification services and returning the consolidated result. | {"status": "Order Processed", "user_info": {"user_id": 101, "name": "Student", "status": "Active"}, "notification": {"status": "Notification sent successfully via Email"}} |
 
-**Service 2 — `<FILL NAME>`**
-
-| Method | Endpoint | Description | Sample Response |
-|--------|----------|-------------|-----------------|
-| `GET` | `<FILL>` | `<FILL>` | `<FILL>` |
-
-**Service 3 — `<FILL NAME>`**
+**Service 2 — user-service**
 
 | Method | Endpoint | Description | Sample Response |
 |--------|----------|-------------|-----------------|
-| `GET` | `<FILL>` | `<FILL>` | `<FILL>` |
+| GET | /user | `Fetches details and active status for a given user profile. | {"user_id": 101, "name": "Student", "status": "Active"} |
+
+**Service 3 — notification-service**
+
+| Method | Endpoint | Description | Sample Response |
+|--------|----------|-------------|-----------------|
+| GET |/notify | Simulates sending an order confirmation notification. | {"status": "Notification sent successfully via Email"} |
 
 ### Independent Testing of Each Service
 
