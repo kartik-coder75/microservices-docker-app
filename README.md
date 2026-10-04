@@ -35,17 +35,17 @@ To develop a microservice-based application containing three independent service
 
 | Item | Details |
 |------|---------|
-| **Application Domain** | `<FILL: e.g., Online Shopping / Food Delivery / Library Management>` |
+| **Application Domain** | Order Management |
 | **Number of Microservices** | 3 |
-| **Programming Language / Framework** | `<FILL: e.g., Python Flask / Node.js Express / Spring Boot>` |
+| **Programming Language / Framework** | Python Flask |
 | **Containerization** | Docker |
 | **Orchestration / Deployment** | Docker Compose |
-| **Load Testing Tool** | `<FILL: e.g., Apache Bench / wrk / Locust / k6 / custom script>` |
-| **Monitoring Tool** | `docker stats` `<FILL: or other tool used>` |
+| **Load Testing Tool** | Custom Python script |
+| **Monitoring Tool** | docker stats |
 
 **Short description of the application:**
 
-`<FILL: 2–3 lines describing what your application does.>`
+A 3-tier microservice application simulating an e-commerce order workflow. The order-service acts as an entry API gateway that orchestrates end-to-end order processing by synchronously querying user-service for customer profile verification and triggering notification-service to deliver status alerts over an isolated Docker bridge network.
 
 ---
 
@@ -77,26 +77,24 @@ Client → Service 1 → Service 2 / Service 3
                                    │  HTTP
                                    ▼
                       ┌──────────────────────────┐
-                      │ Service 1: <FILL NAME>   │
-                      │ Port: <FILL>             │
+                      │ Service 1: order-service   │
+                      │ Port: 5001                 │
                       └─────┬──────────────┬─────┘
                             │              │
               (service name)│              │(service name)
                             ▼              ▼
           ┌───────────────────────┐   ┌───────────────────────┐
-          │ Service 2: <FILL NAME>│   │ Service 3: <FILL NAME>│
-          │ Port: <FILL>          │   │ Port: <FILL>          │
+          │ Service 2: user-service│   │ Service 3: notification-service│
+          │ Port: 5002             │   │ Port: 5003                     │
           └───────────────────────┘   └───────────────────────┘
 
             All services run on the same Docker Compose network
 ```
 
-> 💡 *Replace the diagram above with your own architecture image if you have one:*
-> `![Architecture Diagram](images/architecture.png)`
 
 ### Communication Flow
 
-`<FILL: Explain the request flow, e.g., "Client calls Service 1 at /order → Service 1 calls Service 2 (http://service2:5001/...) for inventory → Service 1 calls Service 3 (http://service3:5002/...) for payment → combined response returned to client.">`
+Client calls order-service at http://localhost:5001/order → order-service calls user-service (http://user-service:5000/user) for user profile details → order-service calls notification-service (http://notification-service:5000/notify) to trigger order notifications → combined aggregated response is returned to the client.
 
 ---
 
