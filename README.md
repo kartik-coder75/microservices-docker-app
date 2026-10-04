@@ -72,7 +72,7 @@ Client → Service 1 → Service 2 / Service 3
 ```
                       ┌──────────────────────────┐
                       │          Client          │
-                      │ (Browser / curl / Tool)  │
+                      │          (curl)          │
                       └────────────┬─────────────┘
                                    │  HTTP
                                    ▼
@@ -83,10 +83,10 @@ Client → Service 1 → Service 2 / Service 3
                             │              │
               (service name)│              │(service name)
                             ▼              ▼
-          ┌───────────────────────┐   ┌───────────────────────┐
-          │ Service 2: user-service│   │ Service 3: notification-service│
-          │ Port: 5002             │   │ Port: 5003                     │
-          └───────────────────────┘   └───────────────────────┘
+          ┌───────────────────────┐   ┌─────────────────────────────────┐
+          │ Service 2: user-service│  │ Service 3: notification-service │
+          │ Port: 5002             │  │ Port: 5003                      │
+          └───────────────────────┘   └─────────────────────────────────┘
 
             All services run on the same Docker Compose network
 ```
@@ -101,28 +101,24 @@ Client calls order-service at http://localhost:5001/order → order-service call
 ## Repository Structure
 
 ```
-<FILL: adjust to match your repository>
 .
-├── service1/
-│   ├── app.py (or index.js / Main.java)
-│   ├── requirements.txt (or package.json / pom.xml)
+├── notification-service/
+│   ├── app.py 
+│   ├── requirements.txt 
 │   └── Dockerfile
-├── service2/
+├── order-service/
 │   ├── app.py
 │   ├── requirements.txt
 │   └── Dockerfile
-├── service3/
+├── user-service/
 │   ├── app.py
 │   ├── requirements.txt
 │   └── Dockerfile
 ├── docker-compose.yml
-├── load_test/
-│   └── <load testing script / results>
-├── results/
-│   ├── observations.csv
-│   └── docker_stats_logs/
-├── images/
-│   └── <screenshots and graphs>
+├── load_test.py
+|── performance_graphs.png
+|── plot_graphs.py
+├── .gitignore
 └── README.md
 ```
 
