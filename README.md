@@ -306,13 +306,13 @@ docker compose ps
 
 ### Docker Network Configuration
 
-- **Network name:** 
+- **Network name:** microservice-lab_lab-network
 - **Network driver:**  bridge
 - All three services are attached to the same network through `docker-compose.yml`.
 
 ```bash
 docker network ls
-docker network inspect <network-name>
+docker network inspect microservice-lab_lab-network
 ```
 
 
@@ -320,8 +320,8 @@ docker network inspect <network-name>
 
 | Caller | Callee | URL Used (Docker Service Name) | Purpose |
 |--------|--------|--------------------------------|---------|
-| order-service | user-service | (http://user-service:5000/user) | Retrieve customer account and active status details |
-| order-service | notification-service | (http://notification-service:5000/notify) | Trigger dispatch of order confirmation alerts |
+| order-service | user-service | http://user-service:5000/user | Retrieve customer account and active status details |
+| order-service | notification-service | http://notification-service:5000/notify | Trigger dispatch of order confirmation alerts |
 
 ### End-to-End Request
 
