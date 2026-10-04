@@ -192,6 +192,7 @@ curl http://localhost:5002/user
 curl http://localhost:5003/notify
 ```
 
+---
 ## Checkpoint 2 — Containerize and Deploy the Application
 
 ### Tasks
@@ -305,8 +306,8 @@ docker compose ps
 
 ### Docker Network Configuration
 
-- **Network name:** `<FILL>`
-- **Network driver:** `bridge` `<FILL: confirm>`
+- **Network name:** 
+- **Network driver:**  bridge
 - All three services are attached to the same network through `docker-compose.yml`.
 
 ```bash
@@ -314,30 +315,35 @@ docker network ls
 docker network inspect <network-name>
 ```
 
-📸 `![Docker Network](images/docker_network.png)`
 
 ### Service-to-Service Communication (Using Docker Service Names)
 
 | Caller | Callee | URL Used (Docker Service Name) | Purpose |
 |--------|--------|--------------------------------|---------|
-| Service 1 | Service 2 | `http://<service2-name>:<port>/<endpoint>` | `<FILL>` |
-| Service 1 | Service 3 | `http://<service3-name>:<port>/<endpoint>` | `<FILL>` |
+| order-service | user-service | (http://user-service:5000/user) | Retrieve customer account and active status details |
+| order-service | notification-service | (http://notification-service:5000/notify) | Trigger dispatch of order confirmation alerts |
 
 ### End-to-End Request
 
 ```bash
-curl http://localhost:<PORT>/<end-to-end-endpoint>
+curl http://localhost:5001/order
 ```
 
 **Sample Response:**
 
 ```json
 {
-  "FILL": "paste the final combined response here"
+  "notification": {
+    "status": "Notification sent successfully via Email"
+  },
+  "status": "Order Processed",
+  "user_info": {
+    "name": "Student",
+    "status": "Active",
+    "user_id": 101
+  }
 }
 ```
-
-📸 `![End-to-End Request](images/end_to_end.png)`
 
 ---
 
