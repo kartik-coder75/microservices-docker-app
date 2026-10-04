@@ -187,19 +187,10 @@ Justification: E-commerce applications require decoupled components where orderi
 ### Independent Testing of Each Service
 
 ```bash
-# Example — replace with your own commands
-curl http://localhost:<PORT1>/<endpoint>
-curl http://localhost:<PORT2>/<endpoint>
-curl http://localhost:<PORT3>/<endpoint>
+curl http://localhost:5001/
+curl http://localhost:5002/user
+curl http://localhost:5003/notify
 ```
-
-📸 **Screenshots:** `<FILL: add screenshots of each service responding independently>`
-
-`![Service 1 Test](images/service1_test.png)`
-`![Service 2 Test](images/service2_test.png)`
-`![Service 3 Test](images/service3_test.png)`
-
----
 
 ## Checkpoint 2 — Containerize and Deploy the Application
 
@@ -226,14 +217,18 @@ A separate Dockerfile is provided for each service:
 
 ### Dependency / Configuration Files
 
-`<FILL: e.g., requirements.txt / package.json / pom.xml for each service>`
+order-service/requirements.txt: flask, requests
+
+user-service/requirements.txt: flask
+
+notification-service/requirements.txt: flask
 
 ### Build Docker Images
 
 ```bash
-docker build -t <service1-image-name> ./service1
-docker build -t <service2-image-name> ./service2
-docker build -t <service3-image-name> ./service3
+docker build -t order-service ./order-service
+docker build -t user-service ./user-service
+docker build -t notification-service ./notification-service
 ```
 
 ### Verify Images
@@ -242,14 +237,42 @@ docker build -t <service3-image-name> ./service3
 docker images
 ```
 
-📸 `![Docker Images](images/docker_images.png)`
-
 ### docker-compose.yml
 
 See [`docker-compose.yml`](docker-compose.yml).
 
 ```yaml
-# <FILL: paste your docker-compose.yml here for quick reference>
+services:
+  order-service:
+    build: ./order-service
+    ports:
+      - "5001:5000"
+    environment:
+      - USER_SERVICE_URL=http://user-service:5000
+      - NOTIFICATION_SERVICE_URL=http://notification-service:5000
+    depends_on:
+      - user-service
+      - notification-service
+    networks:
+      - lab-network
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "5002:5000"
+    networks:
+      - lab-network
+
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "5003:5000"
+    networks:
+      - lab-network
+
+networks:
+  lab-network:
+    driver: bridge
 ```
 
 ### Deploy Using Docker Compose
@@ -264,8 +287,6 @@ docker compose up --build -d
 docker ps
 docker compose ps
 ```
-
-📸 `![Running Containers](images/docker_ps.png)`
 
 ---
 
