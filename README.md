@@ -77,16 +77,16 @@ Client → Service 1 → Service 2 / Service 3
                                    │  HTTP
                                    ▼
                       ┌──────────────────────────┐
-                      │ Service 1: order-service   │
-                      │ Port: 5001                 │
+                      │ Service 1: order-service │
+                      │ Port: 5001               │
                       └─────┬──────────────┬─────┘
                             │              │
-              (service name)│              │(service name)
+              (user-service)│              │(notification-service)
                             ▼              ▼
-          ┌───────────────────────┐   ┌─────────────────────────────────┐
-          │ Service 2: user-service│  │ Service 3: notification-service │
-          │ Port: 5002             │  │ Port: 5003                      │
-          └───────────────────────┘   └─────────────────────────────────┘
+          ┌────────────────────────┐   ┌─────────────────────────────────┐
+          │ Service 2: user-service│   │ Service 3: notification-service │
+          │ Port: 5002             │   │ Port: 5003                      │
+          └────────────────────────┘   └─────────────────────────────────┘
 
             All services run on the same Docker Compose network
 ```
@@ -128,12 +128,12 @@ Client calls order-service at http://localhost:5001/order → order-service call
 
 | Component | Technology |
 |-----------|------------|
-| Language / Framework | `<FILL>` |
-| Containerization | Docker `<version>` |
-| Deployment | Docker Compose `<version>` |
-| Load Testing | `<FILL>` |
-| Monitoring | `docker stats` |
-| Graph Plotting | `<FILL: e.g., Excel / Matplotlib / Google Sheets>` |
+| Language / Framework | Python 3.12.8 / Flask |
+| Containerization | Docker 29.8.0 |
+| Deployment | Docker Compose v5.5.1 |
+| Load Testing | Custom Python Script |
+| Monitoring | docker stats |
+| Graph Plotting | Matplotlib |
 
 ---
 
