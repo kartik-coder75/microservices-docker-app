@@ -220,9 +220,9 @@ curl http://localhost:<PORT3>/<endpoint>
 
 A separate Dockerfile is provided for each service:
 
-- [`service1/Dockerfile`](service1/Dockerfile)
-- [`service2/Dockerfile`](service2/Dockerfile)
-- [`service3/Dockerfile`](service3/Dockerfile)
+- [`order-service/Dockerfile`](order-service/Dockerfile)
+- [`user-service/Dockerfile`](user-service/Dockerfile)
+- [`notification-service/Dockerfile`](notification-service/Dockerfile)
 
 ### Dependency / Configuration Files
 
