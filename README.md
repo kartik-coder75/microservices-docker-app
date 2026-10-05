@@ -463,51 +463,45 @@ All three containers were monitored using `docker stats` CLI live stream while e
 
 **1. Concurrent Requests vs Average Response Time**
 
-`![Concurrency vs Response Time](images/graph_response_time.png)`
-
 **2. Concurrent Requests vs Throughput**
-
-`![Concurrency vs Throughput](images/graph_throughput.png)`
 
 **3. Concurrent Requests vs CPU Utilization**
 
-`![Concurrency vs CPU](images/graph_cpu.png)`
-
 **4. Concurrent Requests vs Memory Utilization**
 
-`![Concurrency vs Memory](images/graph_memory.png)`
+<img width="1919" height="954" alt="Screenshot 2026-10-04 121638" src="https://github.com/user-attachments/assets/cdbeeaba-3924-47be-8da7-d57be4668fd1" />
+
 
 ### Analysis
 
 **Comparison of performance at different workload levels:**
 
-`<FILL>`
+From Concurrency 1 (W1) to Concurrency 4 (W3), throughput scaled almost linearly from 32.14 req/s to 114.05 req/s while average response time remained stable (increasing marginally from 30.90 ms to 34.63 ms). As workload increased to Concurrency 8 (W4) and Concurrency 16 (W5), throughput saturated near ~120–124 req/s, and average response time escalated sharply to 62.27 ms and 122.70 ms. Zero request failures occurred across all tested workloads.
 
 **Effect of increasing workload on the application:**
 
-- Response time: `<FILL>`
-- Throughput: `<FILL>`
-- CPU utilization: `<FILL>`
-- Memory utilization: `<FILL>`
-- Failed requests: `<FILL>`
+- Response time: Increased moderately from 30.90 ms (W1) to 34.63 ms (W3), then spiked sharply to 62.27 ms (W4) and 122.70 ms (W5) due to queueing delays under higher concurrency.
+- Throughput: Increased significantly from 32.14 req/s to a peak of 124.44 req/s at Concurrency 8, then plateaued/slightly dropped to 120.19 req/s at Concurrency 16 as CPU capacity saturated.
+- CPU utilization: Scaled dramatically on order-service from 29.14% (W1) up to 90.49% (W5), whereas user-service and notification-service remained comparatively low (peaking around 17.99% and 20.02%).
+- Memory utilization: Remained nearly constant across all workloads for all services (order-service ~28–30 MiB, user-service ~22 MiB, notification-service ~22–23 MiB), indicating stateless request handling with no memory leaks.
+- Failed requests: 0 failed requests across all workload tiers (100% success rate up to Concurrency 16).
 
 **Microservice consuming the most resources:**
 
-`<FILL: name the service and justify it using your measured CPU/memory values>`
+order-service consumed the most resources by a significant margin. While user-service and notification-service peaked at only 17.99% and 20.02% CPU respectively, order-service reached a peak CPU utilization of 90.49% at W5 and maintained higher memory usage (~29.39–30.87 MiB vs. ~22–23 MiB). This occurs because order-service serves as the primary ingress gateway, managing incoming client network connections, issuing separate outgoing HTTP calls to both backend microservices, and aggregating their JSON payloads.
 
 **Performance degradation / failures observed and their explanation:**
 
-`<FILL: e.g., point at which response time rose sharply, saturation of throughput, errors/timeouts, and the likely cause>`
-
+Performance degradation began at Concurrency 8 (W4) and was prominently evident at Concurrency 16 (W5), where response times doubled from 62.27 ms to 122.70 ms while throughput plateaued around ~120 req/s. This saturation occurred because order-service reached 90.49% CPU utilization, creating a processing bottleneck. Because order-service makes synchronous sequential requests over HTTP to user-service and notification-service, the single-threaded/blocking nature of default Flask development server workers caused worker starvation and request queuing under 16 concurrent clients. No HTTP error failures or timeouts occurred, confirming stability under load.
 ### Architecture, Containerization, Communication and Workload Testing — Summary
 
 | Area | Summary |
 |------|---------|
-| Architecture | `<FILL>` |
-| Containerization | `<FILL>` |
-| Communication | `<FILL>` |
-| Workload Testing | `<FILL>` |
-| Performance Results | `<FILL>` |
+| Architecture | 3-tier decoupled microservice application composed of order-service (acting as the entry API Gateway on port 5001), user-service (port 5002), and notification-service (port 5003) built with Python Flask. |
+| Containerization | Each microservice is packaged using standalone Dockerfile builds based on Python images, managing service-specific dependencies via isolated requirements.txt files. |
+| Communication | Microservices run inside a dedicated user-defined Docker bridge network (microservice-lab_lab-network), communicating synchronously via HTTP REST using internal Docker DNS service names (http://user-service:5000 and http://notification-service:5000). |
+| Workload Testing | Automated benchmarking executed against the end-to-end composite /order endpoint using a custom Python multi-threaded script across 5 concurrency tiers ($1, 2, 4, 8, 16$) with 100 requests each, monitored live using docker stats. |
+| Performance Results | Peak throughput reached $124.44\text{ req/s}$ at concurrency 8 before plateauing. Average response time escalated from $30.90\text{ ms}$ to $122.70\text{ ms}$ at concurrency 16 as gateway CPU peaked at $90.49\%$, with zero failed requests across all workloads. |
 
 ---
 
@@ -517,14 +511,14 @@ All three containers were monitored using `docker stats` CLI live stream while e
 
 - [Docker](https://docs.docker.com/get-docker/) installed
 - [Docker Compose](https://docs.docker.com/compose/install/) installed
-- `<FILL: any load-testing tool needed, e.g., Apache Bench / Locust / k6>`
+- Python 3.x installed with requests library (for running load_test.py)
 
 ### Steps
 
 ```bash
 # 1. Clone the repository
-git clone <FILL: your-repo-url>
-cd <FILL: repo-folder>
+git clone [<FILL: your-repo-url>](https://github.com/kartik-coder75/microservices-docker-app)
+cd C:\Users\karti\OneDrive\Documents\KLETech\FifthSem\CloudComputing\Lab\LabExperiments\microservice-lab
 
 # 2. Build and start all three services
 docker compose up --build -d
@@ -533,10 +527,10 @@ docker compose up --build -d
 docker compose ps
 
 # 4. Test the end-to-end API
-curl http://localhost:<PORT>/<endpoint>
+curl http://localhost:5001/order
 
 # 5. Run the load test (example)
-<FILL: your load test command or script>
+python load_test.py
 
 # 6. Monitor resource usage in another terminal
 docker stats
