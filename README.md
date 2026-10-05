@@ -457,7 +457,6 @@ All three containers were monitored using `docker stats` CLI live stream while e
 | W4 | 8 | 62.27 | 124.44 | 0 |
 | W5 | 16 | 122.70 | 120.19 | 0 |
 
-> *CPU and Memory here can be the total across all three containers, or you can refer to the per-container tables in Checkpoint 4.*
 
 ### Performance Graphs
 
@@ -517,7 +516,7 @@ Performance degradation began at Concurrency 8 (W4) and was prominently evident 
 
 ```bash
 # 1. Clone the repository
-git clone [<FILL: your-repo-url>](https://github.com/kartik-coder75/microservices-docker-app)
+git clone https://github.com/kartik-coder75/microservices-docker-app
 cd C:\Users\karti\OneDrive\Documents\KLETech\FifthSem\CloudComputing\Lab\LabExperiments\microservice-lab
 
 # 2. Build and start all three services
@@ -529,7 +528,7 @@ docker compose ps
 # 4. Test the end-to-end API
 curl http://localhost:5001/order
 
-# 5. Run the load test (example)
+# 5. Run the load test
 python load_test.py
 
 # 6. Monitor resource usage in another terminal
