@@ -18,10 +18,9 @@
 10. [Checkpoint 4 — Generate Varying Workloads and Monitor Performance](#checkpoint-4--generate-varying-workloads-and-monitor-performance)
 11. [Checkpoint 5 — Analyze and Present the Results](#checkpoint-5--analyze-and-present-the-results)
 12. [How to Run the Project](#how-to-run-the-project)
-13. [Evaluation Scheme](#evaluation-scheme)
-14. [Final Deliverables Checklist](#final-deliverables-checklist)
-15. [Conclusion](#conclusion)
-16. [Author](#author)
+13. [Final Deliverables Checklist](#final-deliverables-checklist)
+14. [Conclusion](#conclusion)
+
 
 ---
 
@@ -538,20 +537,6 @@ docker stats
 docker compose down
 ```
 
----
-
-## Evaluation Scheme
-
-**Final Evaluation — 5 Marks**
-
-| Checkpoint | Evaluation Area | Marks |
-|------------|-----------------|-------|
-| 1 | Design and develop 3 microservices | 1 |
-| 2 | Containerize and deploy using Docker | 1 |
-| 3 | Establish and demonstrate inter-service communication | 1 |
-| 4 | Generate varying workloads and monitor performance | 1 |
-| 5 | Analyze results and demonstrate the complete experiment | 1 |
-| | **TOTAL** | **5** |
 
 ---
 
