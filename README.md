@@ -581,15 +581,7 @@ DEVELOP → CONTAINERIZE → DEPLOY → CONNECT → LOAD TEST → MONITOR → AN
 
 ## Conclusion
 
-`<FILL: 4–6 lines summarizing what was built, how the application behaved as workload increased from 1 to 16 concurrent requests, which service was the bottleneck, and what you learned about containerized microservices.>`
+A 3-tier Flask microservice application was containerized and deployed using Docker Compose over an isolated bridge network. As concurrency increased from 1 to 16, throughput peaked at 124.44 req/s while response time increased to 122.70 ms without any failed requests. The order-service acted as the primary bottleneck reaching 90.49% CPU utilization, demonstrating container resource isolation and highlighting the necessity of asynchronous handling under heavy loads.
 
 ---
 
-## Author
-
-| | |
-|---|---|
-| **Name** | `<FILL>` |
-| **Register / Roll No.** | `<FILL>` |
-| **Course / Department** | `<FILL>` |
-| **Institution** | `<FILL>` |
