@@ -368,7 +368,7 @@ curl http://localhost:5001/order
 
 ### Load-Testing Tool / Workload Generator
 
-- **Tool:**Custom Python script using concurrent.futures.ThreadPoolExecutor and requests
+- **Tool:** Custom Python script using concurrent futures.ThreadPoolExecutor and requests
 - **Total requests per workload:** 100
 - **Test duration (if applicable):** Variable / Request-bounded (runs until all 100 requests complete per concurrency level)
 
