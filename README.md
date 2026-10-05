@@ -364,14 +364,14 @@ curl http://localhost:5001/order
 
 ### API Selected for Workload Testing
 
-- **Endpoint:** `<FILL>`
-- **Reason for selection:** `<FILL: e.g., it involves all three services, so it reflects the full end-to-end load>`
+- **Endpoint:** GET http://localhost:5001/order
+- **Reason for selection:** It acts as the primary end-to-end composite endpoint that triggers synchronous inter-service communication across all three microservices (order-service calling both user-service and notification-service), ensuring the measured resource metrics reflect full system load.
 
 ### Load-Testing Tool / Workload Generator
 
-- **Tool:** `<FILL>`
-- **Total requests per workload:** `<FILL>`
-- **Test duration (if applicable):** `<FILL>`
+- **Tool:**Custom Python script using concurrent.futures.ThreadPoolExecutor and requests
+- **Total requests per workload:** 100
+- **Test duration (if applicable):** Variable / Request-bounded (runs until all 100 requests complete per concurrency level)
 
 ### Suggested Workload Levels
 
@@ -386,8 +386,8 @@ curl http://localhost:5001/order
 ### Commands Used
 
 ```bash
-# Load test command (replace with yours)
-<FILL: e.g., ab -n 1000 -c 1 http://localhost:<PORT>/<endpoint>>
+# Load test
+python load_test.py
 
 # Container monitoring
 docker stats
@@ -395,41 +395,40 @@ docker stats
 
 ### Monitoring Method
 
-All three containers were monitored using `docker stats` `<FILL: or other method>` while each workload was running. The peak/average CPU and memory utilization of each container was recorded.
+All three containers were monitored using `docker stats` CLI live stream while each workload was running. The peak/average CPU and memory utilization of each container was recorded. 
 
-📸 `![Docker Stats](images/docker_stats.png)`
 
 ### Raw Measurements — Per-Container Resource Utilization
 
-**Service 1 — `<FILL NAME>`**
+**Service 1 — order-service**
+
+| Workload | Concurrency | CPU (%) | Memory (MiB) |
+|----------|-------------|---------|------------------|
+| W1 | 1 | 29.14 | 29.39 |
+| W2 | 2 | 55.09 | 28.07 |
+| W3 | 4 | 50.1 | 30.87 |
+| W4 | 8 | 81.77 | 30.17 |
+| W5 | 16 | 90.49 | 29.37 |
+
+**Service 2 — user-service**
 
 | Workload | Concurrency | CPU (%) | Memory (MiB / %) |
 |----------|-------------|---------|------------------|
-| W1 | 1 | | |
-| W2 | 2 | | |
-| W3 | 4 | | |
-| W4 | 8 | | |
-| W5 | 16 | | |
+| W1 | 1 | 9.18 | 22.19 |
+| W2 | 2 | 17.99 | 22.28 |
+| W3 | 4 | 14.06 | 22.14 |
+| W4 | 8 | 16.66 | 22.31 |
+| W5 | 16 | 15.73 | 21.91 |
 
-**Service 2 — `<FILL NAME>`**
-
-| Workload | Concurrency | CPU (%) | Memory (MiB / %) |
-|----------|-------------|---------|------------------|
-| W1 | 1 | | |
-| W2 | 2 | | |
-| W3 | 4 | | |
-| W4 | 8 | | |
-| W5 | 16 | | |
-
-**Service 3 — `<FILL NAME>`**
+**Service 3 — notification-service**
 
 | Workload | Concurrency | CPU (%) | Memory (MiB / %) |
 |----------|-------------|---------|------------------|
-| W1 | 1 | | |
-| W2 | 2 | | |
-| W3 | 4 | | |
-| W4 | 8 | | |
-| W5 | 16 | | |
+| W1 | 1 | 8.71 | 22.73 |
+| W2 | 2 | 16.80 | 23.31 |
+| W3 | 4 | 20.02 | 23.5 |
+| W4 | 8 | 11.85 | 22.98 |
+| W5 | 16 | 19.88 | 23.86 |
 
 ---
 
