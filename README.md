@@ -449,13 +449,13 @@ All three containers were monitored using `docker stats` CLI live stream while e
 
 ### Performance Observation Table
 
-| Workload | Concurrency | Avg. Response Time (ms) | Throughput (req/s) | Failed Requests | CPU (%) | Memory (MiB) |
-|----------|-------------|-------------------------|--------------------|-----------------|---------|--------------|
-| W1 | 1 | | | | | |
-| W2 | 2 | | | | | |
-| W3 | 4 | | | | | |
-| W4 | 8 | | | | | |
-| W5 | 16 | | | | | |
+| Workload | Concurrency | Avg. Response Time (ms) | Throughput (req/s) | Failed Requests |
+|----------|-------------|-------------------------|--------------------|-----------------|
+| W1 | 1 | 30.90 | 32.14 | 0 |
+| W2 | 2 | 32.07 | 61.91 | 0 | 
+| W3 | 4 | 34.63 | 114.05 | 0 |
+| W4 | 8 | 62.27 | 124.44 | 0 |
+| W5 | 16 | 122.70 | 120.19 | 0 |
 
 > *CPU and Memory here can be the total across all three containers, or you can refer to the per-container tables in Checkpoint 4.*
 
