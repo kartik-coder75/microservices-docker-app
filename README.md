@@ -540,21 +540,6 @@ docker compose down
 
 ---
 
-## Final Deliverables Checklist
-
-- [ ] Source code of the three microservices
-- [ ] Three Dockerfiles
-- [ ] `docker-compose.yml`
-- [ ] Running Docker containers
-- [ ] Demonstration of inter-service communication
-- [ ] Workload test results
-- [ ] CPU and memory observations
-- [ ] Performance observation table
-- [ ] Performance graphs
-- [ ] Brief analysis and conclusion
-
----
-
 ## Workflow
 
 ```
