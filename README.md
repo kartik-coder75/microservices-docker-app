@@ -186,7 +186,7 @@ Justification: E-commerce applications require decoupled components where orderi
 ### Independent Testing of Each Service
 
 ```bash
-curl http://localhost:5001/
+curl http://localhost:5001/order
 curl http://localhost:5002/user
 curl http://localhost:5003/notify
 ```
